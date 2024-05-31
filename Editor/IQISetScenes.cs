@@ -10,6 +10,7 @@ public class IQISetScenes : EditorWindow
     Object NewPrefab;
     Object NewTexture;
     Object NewVolume;
+    Object M;
     [MenuItem("关卡插件/一键制作关卡")]
     static void Init()
     {
@@ -52,7 +53,13 @@ public class IQISetScenes : EditorWindow
         {
             CreateTextureName();
         }
+        M = EditorGUILayout.ObjectField("模型文件夹", M, typeof(Object), true);
+        if (GUILayout.Button("文件夹"))
+        {
+            EnableReadWriteForModels();
+        }
     }
+
     //创建对应文件夹
     private void CreateModelFolder()
     {
@@ -92,14 +99,14 @@ public class IQISetScenes : EditorWindow
 
             if (nameParts.Length >= 3)
             {
-                string newName = nameParts[0] + "_" + nameParts[1]+ "_" + nameParts[2];
+                string newName = nameParts[0] + "_" + nameParts[1] + "_" + nameParts[2];
                 string newFilePath = Path.Combine(modelFolderPath, newName + ".exr"); // 替换为实际的文件类型
 
                 AssetDatabase.RenameAsset(path, newName);
                 AssetDatabase.ImportAsset(path);
 
-              // 更新TextureImporter设置以确保贴图正确加载
-                        textureImporter.textureType = TextureImporterType.Sprite;
+                // 更新TextureImporter设置以确保贴图正确加载
+                textureImporter.textureType = TextureImporterType.Sprite;
                 textureImporter.spriteImportMode = SpriteImportMode.Single;
                 textureImporter.SaveAndReimport();
             }
@@ -419,6 +426,34 @@ public class IQISetScenes : EditorWindow
 
         }
     }
+
+
+
+    private static void EnableReadWriteForModels()
+    {
+        string materiPath = AssetDatabase.GetAssetPath(M);
+        string[] guids = AssetDatabase.FindAssets("t:Model", new string[] { materiPath });
+
+        foreach (string guid in guids)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            ModelImporter modelImporter = AssetImporter.GetAtPath(assetPath) as ModelImporter;
+
+            if (modelImporter != null)
+            {
+                modelImporter.isReadable = true;
+                modelImporter.animationType = ModelImporterAnimationType.Generic; // 将Animation Type改为Generic
+                modelImporter.materialLocation = ModelImporterMaterialLocation.External; // 将Materials Location改为UseExternalMaterials(Legacy)
+                AssetDatabase.ImportAsset(assetPath);
+            }
+        }
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+    }
+
+
 }
 
 
@@ -427,4 +462,3 @@ public class IQISetScenes : EditorWindow
 
 
 
-    
