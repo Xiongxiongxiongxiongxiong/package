@@ -429,7 +429,7 @@ public class IQISetScenes : EditorWindow
 
 
 
-    private static void EnableReadWriteForModels()
+    private  void EnableReadWriteForModels()
     {
         string materiPath = AssetDatabase.GetAssetPath(M);
         string[] guids = AssetDatabase.FindAssets("t:Model", new string[] { materiPath });
