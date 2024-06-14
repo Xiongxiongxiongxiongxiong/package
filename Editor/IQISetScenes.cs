@@ -54,7 +54,7 @@ public class IQISetScenes : EditorWindow
             CreateTextureName();
         }
         M = EditorGUILayout.ObjectField("模型文件夹", M, typeof(Object), true);
-        if (GUILayout.Button("文件夹"))
+        if (GUILayout.Button("一键设置初始模型和材质"))
         {
             EnableReadWriteForModels();
         }
@@ -99,7 +99,7 @@ public class IQISetScenes : EditorWindow
 
             if (nameParts.Length >= 3)
             {
-                string newName = nameParts[0] + "_" + nameParts[1] + "_" + nameParts[2];
+                string newName = nameParts[0] + "_" + nameParts[1];//+ "_" + nameParts[2];
                 string newFilePath = Path.Combine(modelFolderPath, newName + ".exr"); // 替换为实际的文件类型
 
                 AssetDatabase.RenameAsset(path, newName);
@@ -134,7 +134,7 @@ public class IQISetScenes : EditorWindow
             if (!File.Exists(materialFilePath))
             {
                 // 创建Material文件
-                Material material = new Material(Shader.Find("IQIRendering/CelToneShading/Scene"));
+                Material material = new Material(Shader.Find("IQIRendering/CelToneShading/Scene(烘焙场景)"));
                 AssetDatabase.CreateAsset(material, materialFilePath);
             }
             AssetDatabase.Refresh();
@@ -402,6 +402,25 @@ public class IQISetScenes : EditorWindow
 
 
 
+                    }
+                    else if(pathSegments.Length == 1)
+                    {
+                        string secondLayerName = pathSegments[0];
+
+
+
+                        if (secondLayerName == mat.name)
+                        {
+
+                            var meshrender = mesh.GetComponent<MeshRenderer>();
+                            var meshMats = meshrender.sharedMaterials;
+                            for (int k = 0; k < meshMats.Length; k++)
+                            {
+                                meshMats[k] = mat;
+                            }
+
+                            meshrender.sharedMaterials = meshMats;
+                        }
                     }
                 }
 
