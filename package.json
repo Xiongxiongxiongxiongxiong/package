@@ -1,9 +1,9 @@
 {
-  "name": "com",
-  "displayName": "MYpackage",
-  "description": "yiqichengwei",
+  "name": "com.xxx.xh",
+  "displayName": "自定义的第一个包",
+  "description": "包含IQI的地图一键制作，查看RMO效果，Editor类的编辑器尝试",
   "version": "1.0.0",
 
-  "author": "XH",
+  "author": "熊辉",
   "license": "MIT"
 }
