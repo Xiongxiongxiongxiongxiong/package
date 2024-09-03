@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using IQIGame.Extension;
+using IQIGame.Extension;
 
 
 
@@ -101,7 +101,7 @@ public class IQISetScenes : EditorWindow
 
         if (GUILayout.Button("设置植被"))
         {
-
+            SetGress();
         }
 
 
@@ -592,59 +592,59 @@ public class IQISetScenes : EditorWindow
         EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
     }
 
-    // private void SetGress()
-    // {
-    //             // 查找所有以 ".asset" 类型结尾的文件
-    //     var gresspath = AssetDatabase.GetAssetPath(gress);
-    //     string[] assetGUIDs = AssetDatabase.FindAssets("t:Object", new[] { gresspath });
-    //   //  var block = (VegetationBlock)ScriptableObject.CreateInstance(typeof(VegetationBlock));
-    //     foreach (string guid in assetGUIDs)
-    //     {
-    //         string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-    //         VegetationBlock asset = (VegetationBlock)AssetDatabase.LoadAssetAtPath<Object>(assetPath);
-    //
-    //         if (asset != null)
-    //         {
-    //             // 遍历所有场景中的对象
-    //             GameObject[] allObjects = FindObjectsOfType<GameObject>();
-    //
-    //             foreach (GameObject obj in allObjects)
-    //             {
-    //                 if (obj.name == asset.name)
-    //                 {
-    //                     // 如果物体名字和 asset 名字相同，添加 VegetationLoader 脚本
-    //                     VegetationLoader vegetationLoader = obj.GetComponent<VegetationLoader>();
-    //
-    //                     if (vegetationLoader == null)
-    //                     {
-    //                         vegetationLoader = obj.AddComponent<VegetationLoader>();
-    //                         vegetationLoader.vegetaion= new VegetationBlock[1] { asset };
-    //                     }
-    //
-    //                     
-    //                     
-    //                //     为脚本分配 asset 文件
-    //                    SerializedObject serializedObject = new SerializedObject(vegetationLoader);
-    //                    SerializedProperty assetProperty = serializedObject.FindProperty("vegetaion"); // 确保属性名正确
-    //
-    //                     // if (assetProperty != null && asset is VegetationBlock)
-    //                     // {
-    //                     //     // 确保 asset 是正确的 VegetationBlock 类型
-    //                     //     List<VegetationBlock> vegetationList = new List<VegetationBlock>(vegetationLoader.vegetaion ?? new VegetationBlock[0]);
-    //                     //     vegetationList.Add((VegetationBlock)asset);
-    //                     //     vegetationLoader.vegetaion = vegetationList.ToArray();
-    //                     //     serializedObject.ApplyModifiedProperties();
-    //                     // }
-    //
-    //                     Debug.Log($"Attached VegetationLoader to {obj.name} and set asset to {asset.name}");
-    //                 }
-    //             }
-    //         }
-    //     }
-    //
-    //     // 刷新资源
-    //     AssetDatabase.Refresh();
-    // }
+    private void SetGress()
+    {
+                // 查找所有以 ".asset" 类型结尾的文件
+        var gresspath = AssetDatabase.GetAssetPath(gress);
+        string[] assetGUIDs = AssetDatabase.FindAssets("t:Object", new[] { gresspath });
+      //  var block = (VegetationBlock)ScriptableObject.CreateInstance(typeof(VegetationBlock));
+        foreach (string guid in assetGUIDs)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            VegetationBlock asset = (VegetationBlock)AssetDatabase.LoadAssetAtPath<Object>(assetPath);
+
+            if (asset != null)
+            {
+                // 遍历所有场景中的对象
+                GameObject[] allObjects = FindObjectsOfType<GameObject>();
+
+                foreach (GameObject obj in allObjects)
+                {
+                    if (obj.name == asset.name)
+                    {
+                        // 如果物体名字和 asset 名字相同，添加 VegetationLoader 脚本
+                        VegetationLoader vegetationLoader = obj.GetComponent<VegetationLoader>();
+
+                        if (vegetationLoader == null)
+                        {
+                            vegetationLoader = obj.AddComponent<VegetationLoader>();
+                            vegetationLoader.vegetaion= new VegetationBlock[1] { asset };
+                        }
+
+                        
+                        
+                   //     为脚本分配 asset 文件
+                       SerializedObject serializedObject = new SerializedObject(vegetationLoader);
+                       SerializedProperty assetProperty = serializedObject.FindProperty("vegetaion"); // 确保属性名正确
+
+                        // if (assetProperty != null && asset is VegetationBlock)
+                        // {
+                        //     // 确保 asset 是正确的 VegetationBlock 类型
+                        //     List<VegetationBlock> vegetationList = new List<VegetationBlock>(vegetationLoader.vegetaion ?? new VegetationBlock[0]);
+                        //     vegetationList.Add((VegetationBlock)asset);
+                        //     vegetationLoader.vegetaion = vegetationList.ToArray();
+                        //     serializedObject.ApplyModifiedProperties();
+                        // }
+
+                        Debug.Log($"Attached VegetationLoader to {obj.name} and set asset to {asset.name}");
+                    }
+                }
+            }
+        }
+
+        // 刷新资源
+        AssetDatabase.Refresh();
+    }
 
 }
    
